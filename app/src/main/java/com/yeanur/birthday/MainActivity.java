@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -163,11 +165,52 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startPetalRain() {
-        
+        ViewGroup rootLayout = findViewById(android.R.id.content);
+        Random random = new Random();
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
+        int screenHeight = getResources().getDisplayMetrics().heightPixels;
+
+        for (int i = 0; i < 60; i++) {
+            ImageView petal = new ImageView(this);
+            petal.setImageResource(R.drawable.petal);
+            
+            int size = 40 + random.nextInt(50);
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(size, size);
+            petal.setLayoutParams(params);
+
+            float startX = random.nextInt(screenWidth);
+            float startY = -random.nextInt(screenHeight) - 200;
+            petal.setX(startX);
+            petal.setY(startY);
+            
+            rootLayout.addView(petal);
+
+            long duration = 3000 + random.nextInt(4000);
+            float endY = screenHeight + 200;
+            float endX = startX + (random.nextInt(400) - 200);
+            float rotation = random.nextInt(360) + 360;
+
+            petal.animate()
+                    .x(endX)
+                    .y(endY)
+                    .rotation(rotation)
+                    .setDuration(duration)
+                    .withEndAction(() -> rootLayout.removeView(petal))
+                    .start();
+        }
     }
 
     private void playMusic() {
-        
+        try {
+            if (mediaPlayer == null) {
+                mediaPlayer = MediaPlayer.create(this, R.raw.birthday_song);
+            }
+            if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+                mediaPlayer.start();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void showFinalMessage() {
@@ -179,5 +222,14 @@ public class MainActivity extends AppCompatActivity {
         tvFinalMessage.setAlpha(0f);
         tvFinalMessage.setText(getString(R.string.late_message));
         tvFinalMessage.animate().alpha(1f).setDuration(2000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }
