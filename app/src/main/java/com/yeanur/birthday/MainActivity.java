@@ -200,18 +200,69 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void playMusic() {
+        private void playMusic() {
+        new Thread(() -> {
+            double[] frequencies = {
+                392.0, 392.0, 440.0, 392.0, 523.25, 493.88,
+                392.0, 392.0, 440.0, 392.0, 587.33, 523.25,
+                392.0, 392.0, 783.99, 659.25, 523.25, 493.88, 440.0,
+                698.46, 698.46, 659.25, 523.25, 587.33, 523.25
+            };
+
+            int[] durations = {
+                250, 250, 500, 500, 500, 1000,
+                250, 250, 500, 500, 500, 1000,
+                250, 250, 500, 500, 500, 500, 1000,
+                250, 250, 500, 500, 500, 1000
+            };
+
+            int sampleRate = 8000;
+            for (int i = 0; i < frequencies.length; i++) {
+                generateTone(frequencies[i], durations[i], sampleRate);
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void generateTone(double frequency, int durationMs, int sampleRate) {
+        int numSamples = durationMs * sampleRate / 1000;
+        double[] sample = new double[numSamples];
+        byte[] generatedSnd = new byte[2 * numSamples];
+
+        for (int i = 0; i < numSamples; ++i) {
+            sample[i] = Math.sin(2 * Math.PI * i / (sampleRate / frequency));
+        }
+
+        int idx = 0;
+        for (final double dVal : sample) {
+            final short val = (short) ((dVal * 32767));
+            generatedSnd[idx++] = (byte) (val & 0x00ff);
+            generatedSnd[idx++] = (byte) ((val & 0xff00) >>> 8);
+        }
+
+        android.media.AudioTrack audioTrack = new android.media.AudioTrack(
+                android.media.AudioManager.STREAM_MUSIC,
+                sampleRate,
+                android.media.AudioFormat.CHANNEL_OUT_MONO,
+                android.media.AudioFormat.ENCODING_PCM_16BIT,
+                generatedSnd.length,
+                android.media.AudioTrack.MODE_STATIC);
+
+        audioTrack.write(generatedSnd, 0, generatedSnd.length);
+        audioTrack.play();
+
         try {
-            if (mediaPlayer == null) {
-                mediaPlayer = MediaPlayer.create(this, R.raw.birthday_song);
-            }
-            if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
-                mediaPlayer.start();
-            }
-        } catch (Exception e) {
+            Thread.sleep(durationMs);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        audioTrack.release();
     }
+    
 
     private void showFinalMessage() {
         darkOverlay.animate().alpha(0f).setDuration(2000);
