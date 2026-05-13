@@ -76,7 +76,7 @@
         android:layout_below="@id/tvLateMessage"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="Click here to see the real-time wish"
+        android:text="@string/btn_real_time_wish"
         android:visibility="gone" />
 
     <TextView
@@ -86,7 +86,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:text="Happy Birthday"
+        android:text="@string/happy_birthday_text"
         android:textColor="#FFD700"
         android:textSize="40sp"
         android:textStyle="bold"
