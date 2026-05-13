@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         tvLateMessage.setVisibility(View.VISIBLE);
         btnLateWish.setVisibility(View.VISIBLE);
 
-        tvLateMessage.setText("Happy birthday to my dearest friend.\nI have developed it only for you.");
+        tvLateMessage.setText(getString(R.string.late_message));
         
         btnLateWish.setOnClickListener(v -> {
             tvLateMessage.setVisibility(View.GONE);
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void enableTapToBlow() {
         tvTapHint.setVisibility(View.VISIBLE);
-        tvTapHint.setText("ফু দাও মোমবাতি নেভাতে (ট্যাপ করো)");
+        tvTapHint.setText(getString(R.string.tap_to_blow_hint));
 
         imgCandle20.setOnClickListener(v -> blowOutSequence());
     }
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
         tvFinalMessage.setVisibility(View.VISIBLE);
         tvFinalMessage.setAlpha(0f);
-        tvFinalMessage.setText("Happy birthday to my dearest friend.\nI have developed it only for you.");
+        tvFinalMessage.setText(getString(R.string.late_message));
         tvFinalMessage.animate().alpha(1f).setDuration(2000);
     }
 }
