@@ -2,7 +2,6 @@ package com.yeanur.birthday;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -26,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imgSky, imgFlame, imgCake, imgCandle20;
     private Button btnLateWish;
     private View darkOverlay;
-    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-        private void playMusic() {
+    private void playMusic() {
         new Thread(() -> {
             double[] frequencies = {
                 392.0, 392.0, 440.0, 392.0, 523.25, 493.88,
@@ -263,7 +261,6 @@ public class MainActivity extends AppCompatActivity {
         audioTrack.release();
     }
     
-
     private void showFinalMessage() {
         darkOverlay.animate().alpha(0f).setDuration(2000);
         imgCake.animate().alpha(0.3f).setDuration(2000);
@@ -273,14 +270,5 @@ public class MainActivity extends AppCompatActivity {
         tvFinalMessage.setAlpha(0f);
         tvFinalMessage.setText(getString(R.string.late_message));
         tvFinalMessage.animate().alpha(1f).setDuration(2000);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
     }
 }
