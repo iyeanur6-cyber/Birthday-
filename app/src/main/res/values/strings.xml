@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">20th Birthday Surprise</string>
+    <string name="late_message">Happy birthday to my dearest friend.\nI have developed it only for you.</string>
+    <string name="btn_real_time_wish">Click here to see the real-time wish</string>
+    <string name="happy_birthday_text">Happy Birthday</string>
+    <string name="tap_to_blow_hint">ফু দাও মোমবাতি নেভাতে (ট্যাপ করো)</string>
+</resources>
